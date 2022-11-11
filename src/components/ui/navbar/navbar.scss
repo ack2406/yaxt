@@ -1,0 +1,40 @@
+#navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282828;
+
+    #navbar-title {
+        padding: 1rem;
+    }
+
+    #navbar-links {
+        width: 30%;
+
+        ul {
+            display: flex;
+
+            li {
+                border-right: 1px solid #fff;
+
+                &:last-child {
+                    border-right: none;
+                }
+
+
+                a {
+                    text-decoration: none;
+                    color: #fff;
+                    padding: 1rem;
+                    
+                    &:hover {
+                        background-color: rgb(17, 17, 17);
+                    }
+                }
+            }
+
+        }
+    }
+
+}

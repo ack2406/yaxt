@@ -1,0 +1,21 @@
+#home {
+    padding: 1rem;
+
+    #tests {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+
+
+        .test-tile {
+            background-color: rgb(56, 37, 37);
+            padding: 1rem;
+
+            &:hover {
+                background-color: rgb(17, 17, 17);
+                cursor: pointer;
+            }
+        }
+    }
+}
