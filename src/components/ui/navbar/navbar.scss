@@ -1,39 +1,36 @@
+@import "../../../variables.scss";
+
 #navbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: #282828;
+    background-color: $dark-gray;
 
     #navbar-title {
         padding: 1rem;
+
+        a {
+            text-decoration: none;
+            color: $text-color;
+        }
     }
+
+
 
     #navbar-links {
         width: 30%;
 
-        ul {
-            display: flex;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
 
-            li {
-                border-right: 1px solid #fff;
-
-                &:last-child {
-                    border-right: none;
-                }
-
-
-                a {
-                    text-decoration: none;
-                    color: #fff;
-                    padding: 1rem;
-                    
-                    &:hover {
-                        background-color: rgb(17, 17, 17);
-                    }
-                }
-            }
-
+        a {
+            padding: 1rem;
+            
+            text-decoration: none;
+            color: $text-color;
         }
     }
 
