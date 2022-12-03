@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import TestTile from "./TestTile";
 import "./home.scss";
 
-interface Test {
+interface ITest {
   id: number;
   name: string;
   description: string;
 }
 
 const Home = () => {
-  const [tests, setTests] = React.useState([] as Test[]);
+  const [tests, setTests] = React.useState([] as ITest[]);
 
   useEffect(() => {
     fetch("http://localhost:8000/sets")
@@ -18,8 +18,8 @@ const Home = () => {
   }, []);
 
   return (
-    <div id="tests">
-      {tests.map((test: Test) => (
+    <div className="tests">
+      {tests.map((test: ITest) => (
         <TestTile key={test.id} test={test} />
       ))}
     </div>
