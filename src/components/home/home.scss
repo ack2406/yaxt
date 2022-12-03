@@ -1,21 +1,24 @@
-#home {
-    padding: 1rem;
+@import "../../variables.scss";
 
-    #tests {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
-        align-items: center;
+#tests {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
 
+  a {
+    text-decoration: none;
+    color: $text-color;
 
-        .test-tile {
-            background-color: rgb(56, 37, 37);
-            padding: 1rem;
-
-            &:hover {
-                background-color: rgb(17, 17, 17);
-                cursor: pointer;
-            }
-        }
+    .test-tile {
+      background-color: $dark-gray;
+      padding: 1rem;
+  
+  
+      &:hover {
+        background-color: $gray;
+        cursor: pointer;
+      }
     }
+  }
 }
