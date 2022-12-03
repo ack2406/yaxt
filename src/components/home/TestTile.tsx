@@ -1,17 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-interface Test {
+interface ITest {
   id: number;
   name: string;
   description: string;
 }
 
-interface TestTileProps {
-  test: Test;
+interface ITestTileProps {
+  test: ITest;
 }
 
-const TestTile = ({ test }: TestTileProps) => {
+const TestTile = ({ test }: ITestTileProps) => {
   return (
     <Link to={`/test/${test.id}`}>
       <div className="test-tile">

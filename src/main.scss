@@ -2,10 +2,14 @@ body {
     background-color: #1a1a1a;
     //font-family: 'Open Sans', sans-serif;
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 18px;
     color: #fff;
 
-    #main {
+    .main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         padding: 1rem;
     }
 }
