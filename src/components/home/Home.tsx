@@ -12,7 +12,7 @@ const Home = () => {
   const [tests, setTests] = React.useState([] as ITest[]);
 
   useEffect(() => {
-    fetch("http://localhost:8000/sets")
+    fetch("http://sobke.duckdns.org:8000/sets")
       .then((response) => response.json())
       .then((data) => setTests(data));
   }, []);

@@ -42,8 +42,16 @@ const Test = () => {
   }, []);
 
   const getTest = () => {
-    fetch(`http://localhost:8000/sets/${id}`)
+    fetch(`http://sobke.duckdns.org:8000/sets/${id}`)
       .then((res) => res.json())
+      .then((data) => {
+        // shuffle questions and answers
+        data.questions.forEach((question: IQuestion) => {
+          question.answers.sort(() => Math.random() - 0.5);
+        });
+        data.questions.sort(() => Math.random() - 0.5);
+        return data;
+      })
       .then((data) => {
         setTest(data);
       });
