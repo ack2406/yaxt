@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 
-import "./test.scss";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
+
 import Question from "./Question";
 
 interface IAnswer {
@@ -42,7 +44,7 @@ const Test = () => {
   }, []);
 
   const getTest = () => {
-    fetch(`http://sobke.duckdns.org:8000/sets/${id}`)
+    fetch(`http://localhost:5000/tests/${id}`)
       .then((res) => res.json())
       .then((data) => {
         // shuffle questions and answers
@@ -103,56 +105,67 @@ const Test = () => {
   useEffect(() => getTest(), []);
 
   return (
-    <div className="test">
-      <div className="test-title">{test.name}</div>
+    <Flex alignItems="center" justifyContent="center">
+      <Box
+        bg={useColorModeValue("gray.100", "gray.700")}
+        w={{ base: "95%", md: "50%", lg: "31rem" }}
+        p="5"
+        borderWidth="1px"
+        rounded="md"
+        boxShadow={"sm"}
+        display="flex"
+        flexDirection="column"
+      >
+        <Heading textAlign="center">{test.name}</Heading>
+        <Flex justifyContent="center" gap="8">
+          <Text>
+            {points}/{answersGiven}
+          </Text>
+          <Text>
+            {answersGiven
+              ? Math.round((points / answersGiven) * 10000) / 100
+              : "-"}
+            %
+          </Text>
+          <Text>
+            {Math.floor(time / 60)}:{time % 60 < 10 ? "0" : ""}
+            {time % 60}
+          </Text>
+        </Flex>
 
-      <div className="test-stats">
-        <div className="test-stat-points">
-          {points}/{answersGiven}
-        </div>
-        <div className="test-stat-percent">
-          {answersGiven
-            ? Math.round((points / answersGiven) * 10000) / 100
-            : "-"}
-          %
-        </div>
-        <div className="test-stat-time">
-          {
-            // display time in minutes and seconds
-            Math.floor(time / 60) +
-              ":" +
-              (time % 60 < 10 ? "0" : "") +
-              (time % 60)
-          }
-        </div>
-      </div>
-
-      <div className="test-question">
-        {test.questions &&
-          (!finished ? (
-            <Question
-              key={test.questions[questionIndex].id}
-              question={test.questions[questionIndex]}
-              validateAnswer={validateAnswer}
-            />
-          ) : (
-            <div className="test-finished">Test zakończony.</div>
-          ))}
-      </div>
-
-      <div className="test-controls">
-        <div
-          className="test-control-button-next"
-          onClick={() => nextQuestion()}
+        <Button
+          onClick={nextQuestion}
+          disabled={!answered && !finished}
+          m="auto"
+          mt="5"
+          w="100%"
+          bg={useColorModeValue("gray.300", "gray.600")}
+          _hover={{
+            bg: useColorModeValue("gray.300", "gray.600"),
+          }}
+          {...((answered || finished) && {
+            _hover: {
+              bg: useColorModeValue("gray.400", "gray.500"),
+            },
+          })}
         >
-          {finished
-            ? "Zacznij od nowa"
-            : answered
-            ? "Następne pytanie"
-            : "Pomiń pytanie"}
-        </div>
-      </div>
-    </div>
+          {finished ? "Restart" : "Następne Pytanie"}
+        </Button>
+
+        <Box>
+          {test.questions &&
+            (!finished ? (
+              <Question
+                key={test.questions[questionIndex].id}
+                question={test.questions[questionIndex]}
+                validateAnswer={validateAnswer}
+              />
+            ) : (
+              <Text></Text>
+            ))}
+        </Box>
+      </Box>
+    </Flex>
   );
 };
 

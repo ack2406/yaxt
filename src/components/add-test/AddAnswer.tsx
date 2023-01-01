@@ -1,6 +1,8 @@
 import React from "react";
 import { Field, FieldArray } from "formik";
 
+import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+
 interface IAnswer {
   id: number;
   content: string;
@@ -18,60 +20,115 @@ interface AddAnswerProps {
   question: IQuestion;
 }
 
-const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
-  return (
-    <FieldArray name={`questions.${indexQuestion}.answers`}>
-      {({ push, remove }) => {
-        return (
-          <div className="add-question-answers">
-            {question.answers.map((_, indexAnswer: number) => (
-              <div className="add-question-answer" key={indexAnswer}>
-                <div className="top-answer">
-                  <label
-                    htmlFor={`questions.${indexQuestion}.answers.${indexAnswer}.content`}
-                  >
-                    Answer
-                  </label>
-                  <div
-                    className="add-question-answer-remove"
-                    onClick={() => remove(indexAnswer)}
-                  >
-                    X
-                  </div>
-                </div>
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  VStack,
+  Heading,
+  Textarea
+} from "@chakra-ui/react";
 
-                <Field
-                  name={`questions.${indexQuestion}.answers.${indexAnswer}.content`}
-                  type="text"
-                />
-                <div className="correctField">
-                  <label
-                    htmlFor={`questions.${indexQuestion}.answers.${indexAnswer}.is_correct`}
+import { useColorModeValue } from "@chakra-ui/react";
+
+const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
+  const color = useColorModeValue("gray.100", "blackAlpha.100");
+  const colorButton = useColorModeValue("gray.200", "blackAlpha.100");
+  const colorButtonHover = useColorModeValue("gray.100", "whiteAlpha.200");
+
+  const bg = useColorModeValue("gray.100", "gray.700");
+  const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
+  return (
+    <Box w="100%">
+      <FieldArray name={`questions.${indexQuestion}.answers`}>
+        {({ push, remove }) => {
+          return (
+            <Box>
+              {question.answers.map((_, indexAnswer: number) => (
+                <VStack
+                  spacing={4}
+                  align="flex-start"
+                  bg={bg}
+                  p="5"
+                  borderWidth="1px"
+                  rounded="md"
+                  boxShadow="sm"
+                  mt="5"
+                  mb="8"
+                  key={indexAnswer}
+                >
+                  <FormControl
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+
                   >
-                    Correct
-                  </label>
-                  <Field
-                    name={`questions.${indexQuestion}.answers.${indexAnswer}.is_correct`}
-                    type="checkbox"
-                  />
-                </div>
-              </div>
-            ))}
-            <div
-              className="add-question-answer-push"
-              onClick={() =>
-                push({
-                  content: "",
-                  is_correct: false,
-                })
-              }
-            >
-              Dodaj odpowiedź
-            </div>
-          </div>
-        );
-      }}
-    </FieldArray>
+                    <Heading size="sm">Odpowiedź {indexAnswer + 1}</Heading>
+
+                    <Button
+                      colorScheme="red"
+                      onClick={() => remove(indexAnswer)}
+                      size="sm"
+                    >
+                      <DeleteIcon/>
+                    </Button>
+                  </FormControl>
+                  <FormControl>
+                    <Field
+                      bg={button}
+                      as={Textarea}
+                      resize="none"
+                      name={`questions.${indexQuestion}.answers.${indexAnswer}.content`}
+                      type="text"
+                      height="90"
+                      placeholder={`Treść odpowiedzi, np. ${(indexAnswer + 1)**2} cm²`}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <Field
+                      as={Checkbox}
+                      name={`questions.${indexQuestion}.answers.${indexAnswer}.is_correct`}
+                      type="checkbox"
+                      size="md"
+                    >
+                      Poprawna
+                    </Field>
+                  </FormControl>
+                </VStack>
+              ))}
+              <Button
+                bg={colorButton}
+                size="lg"
+                p="5"
+                borderWidth="1px"
+                rounded="md"
+
+                w="100%"
+                
+
+                _hover={{
+                  bg: colorButtonHover,
+                }}
+
+                onClick={() =>
+                  push({
+                    content: "",
+                    is_correct: false,
+                  })
+                }
+              >
+                <AddIcon mr="2"/>Dodaj odpowiedź
+              </Button>
+            </Box>
+          );
+        }}
+      </FieldArray>
+    </Box>
   );
 };
 

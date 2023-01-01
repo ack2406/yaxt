@@ -3,6 +3,34 @@ import { Field, FieldArray } from "formik";
 
 import AddAnswer from "./AddAnswer";
 
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  VStack,
+  Heading,
+  Textarea,
+} from "@chakra-ui/react";
+
+import { useColorModeValue } from "@chakra-ui/react";
+
+import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+
+
+import { AlertDialog, useDisclosure } from "@chakra-ui/react";
+import {
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from "@chakra-ui/react";
+
 interface IAnswer {
   id: number;
   content: string;
@@ -16,44 +44,112 @@ interface IQuestion {
 }
 
 const AddQuestion = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const cancelRef = React.useRef() as React.MutableRefObject<HTMLButtonElement>;
+
+  const color = useColorModeValue("gray.100", "gray.700");
+  const colorButton = useColorModeValue("gray.200", "gray.700");
+  const colorButtonHover = useColorModeValue("gray.100", "whiteAlpha.300");
+
+  const bg = useColorModeValue("gray.100", "gray.700");
+  const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
+
   return (
-    <div className="add-questions">
-      <div className="add-questions-title">Add Questions</div>
+    <Box w="100%">
       <FieldArray name="questions">
         {({ push, remove, form }) => {
           const { values: valueQuestions } = form;
           const { questions } = valueQuestions;
 
           return (
-            <div className="add-questions-list">
+            <Box>
               {questions.map((question: IQuestion, indexQuestion: number) => (
-                <div className="add-question" key={indexQuestion}>
-                  <div className="top-answer">
-                    <label htmlFor={`questions.${indexQuestion}.content`}>
-                      Question
-                    </label>
+                <VStack
+                  key={indexQuestion}
+                  spacing={4}
+                  align="flex-start"
+                  bg={color}
+                  p="5"
+                  borderWidth="1px"
+                  rounded="md"
+                  boxShadow="sm"
+                  mt="8"
+                >
+                  <FormControl
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    pb="5"
+                  >
+                    <Heading size="md">Pytanie {indexQuestion + 1}</Heading>
 
-                    <div
-                      className="add-question-remove"
-                      onClick={() => remove(indexQuestion)}
+                    <Button
+                      colorScheme="red"
+                      onClick={() => {
+                        onOpen();
+                      }}
                     >
-                      X
-                    </div>
-                  </div>
+                      <DeleteIcon />
+                    </Button>
 
-                  <Field
-                    name={`questions.${indexQuestion}.content`}
-                    type="text"
-                  />
+                    <AlertDialog
+                      isOpen={isOpen}
+                      leastDestructiveRef={cancelRef}
+                      onClose={onClose}
+                    >
+                      <AlertDialogOverlay>
+                        <AlertDialogContent>
+                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                            Delete Question
+                          </AlertDialogHeader>
+
+                          <AlertDialogBody>
+                            Are you sure? You can't undo this action afterwards.
+                          </AlertDialogBody>
+
+                          <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                              Cancel
+                            </Button>
+                            <Button colorScheme="red" onClick={onClose} ml={3}>
+                              Delete
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialogOverlay>
+                    </AlertDialog>
+                  </FormControl>
+                  <FormControl pb="5" borderBottom="1px" borderColor="gray.600">
+                    <Field
+                      as={Textarea}
+                      bg={button}
+                      resize="none"
+                      height="90"
+                      name={`questions.${indexQuestion}.content`}
+                      type="text"
+                      placeholder="Treść Pytania, np. Ile wynosi pole trójkąta o podstawie 5 m i wysokości 10 m?"
+                    />
+                  </FormControl>
 
                   <AddAnswer
                     question={question}
                     indexQuestion={indexQuestion}
                   />
-                </div>
+                </VStack>
               ))}
-              <div
-                className="add-question-push"
+              <Button
+                bg={colorButton}
+                size="lg"
+                p="5"
+                borderWidth="1px"
+                rounded="md"
+                boxShadow="sm"
+                mt="8"
+                w="100%"
+                _hover={{
+                  bg: colorButtonHover,
+                }}
                 onClick={() =>
                   push({
                     content: "",
@@ -61,13 +157,14 @@ const AddQuestion = () => {
                   })
                 }
               >
-                Dodaj
-              </div>
-            </div>
+                <AddIcon mr="2" />
+                Dodaj Pytanie
+              </Button>
+            </Box>
           );
         }}
       </FieldArray>
-    </div>
+    </Box>
   );
 };
 
