@@ -3,9 +3,39 @@ import { FieldArray, Formik, useFormik, Field, Form } from "formik";
 
 import AddQuestion from "./AddQuestion";
 
-import "./addTest.scss";
+import { Textarea, useColorModeValue } from "@chakra-ui/react";
+
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  VStack,
+} from "@chakra-ui/react";
+
+interface IValues {
+  values: {
+    name: string;
+    description: string;
+    questions: {
+      content: string;
+      answers: {
+        content: string;
+        is_correct: boolean;
+      }[];
+    }[];
+  };
+}
 
 const AddTest = () => {
+  const bg = useColorModeValue("gray.100", "gray.700");
+  const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
+
+
   const initialValues = {
     name: "",
     description: "",
@@ -17,75 +47,132 @@ const AddTest = () => {
             content: "",
             is_correct: false,
           },
+          {
+            content: "",
+            is_correct: false,
+          },
         ],
       },
     ],
   };
 
+  const onSubmit = ({ values }: IValues) => {
+    alert(JSON.stringify(values, null, 2));
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     authorization: "Bearer " + localStorage.getItem("token"),
+    //   },
+    //   body: JSON.stringify({
+    //     name: values.name,
+    //     description: values.description,
+    //     picture_path: "",
+    //   }),
+    // };
+    // fetch("http://localhost:5000/tests", requestOptions)
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     values.questions.forEach((question) => {
+    //       const requestOptions = {
+    //         method: "POST",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           authorization: "Bearer " + localStorage.getItem("token"),
+    //         },
+    //         body: JSON.stringify({
+    //           content: question.content,
+    //           picture_path: "",
+    //         }),
+    //       };
+    //       fetch(
+    //         `http://localhost:5000/tests/${res.id}/questions`,
+    //         requestOptions
+    //       )
+    //         .then((res) => res.json())
+    //         .then((res) => {
+    //           question.answers.forEach((answer) => {
+    //             const requestOptions = {
+    //               method: "POST",
+    //               headers: {
+    //                 "Content-Type": "application/json",
+    //                 authorization: "Bearer " + localStorage.getItem("token"),
+    //               },
+    //               body: JSON.stringify({
+    //                 content: answer.content,
+    //                 is_correct: answer.is_correct,
+    //                 question_id: res.id,
+    //               }),
+    //             };
+    //             fetch(
+    //               `http://localhost:5000/questions/${res.id}/answers`,
+    //               requestOptions
+    //             );
+    //           });
+    //         });
+    //     });
+    //   });
+  };
+
+
+
   return (
-    <div className="add-test">
-      <div className="add-test-title">Add Test</div>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={(values) => {
-          const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: values.name,
-              description: values.description,
-              picture_path: ""
-            }),
-          };
-          fetch("http://sobke.duckdns.org:8000/sets", requestOptions)
-            .then((res) => res.json())
-            .then((res) => {
-              values.questions.forEach((question) => {
-                const requestOptions = {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    content: question.content,
-                    picture_path: ""
-                  }),
-                };
-                fetch(`http://sobke.duckdns.org:8000/sets/${res.id}/questions`, requestOptions)
-                  .then((res) => res.json())
-                  .then((res) => {
-                    question.answers.forEach((answer) => {
-                      const requestOptions = {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          content: answer.content,
-                          is_correct: answer.is_correct,
-                          question_id: res.id,
-                        }),
-                      };
-                      fetch(`http://sobke.duckdns.org:8000/questions/${res.id}/answers`, requestOptions);
-                    });
-                  });
-              });
-            });
-        }}
-        enableReinitialize
-      >
-        {() => (
-          <Form>
-              <label htmlFor="name">Name</label>
-              <Field name="name" type="text" />
+    <Flex align="center" justify="center">
+      <Box w={{ base: "95%", md: "50%", lg: "33%" }}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values) => onSubmit({ values })}
+          enableReinitialize
+        >
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <Flex direction="column" align="flex-end">
+                <VStack
+                  spacing={4}
+                  align="flex-start"
+                  bg={bg}
+                  p="5"
+                  borderWidth="1px"
+                  rounded="md"
+                  boxShadow="sm"
+                  w="100%"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="name">Nazwa Testu</FormLabel>
+                    <Field
+                      bg={button}
+                      as={Input}
+                      name="name"
+                      type="text"
 
-              <label htmlFor="description">Description</label>
-              <Field name="description" type="text" />
+                      placeholder="np. Kolos z Analizy Matematycznej 2018"
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="description">Opis Testu</FormLabel>
+                    <Field
+                      bg={button}
+                      as={Textarea}
+                      name="description"
+                      type="text"
+                      resize="none"
+                      height="90"
+                      placeholder="np. Przykładowe kolokwium udostępnione przez prowadzącego"
+                    />
+                  </FormControl>
+                </VStack>
 
-              <AddQuestion />
+                <AddQuestion />
 
-              <button type="submit">Submit</button>
-
-          </Form>
-        )}
-      </Formik>
-    </div>
+                <Button size="lg" mt="10" mb="40" type="submit" colorScheme="blue">
+                  Stwórz
+                </Button>
+              </Flex>
+            </form>
+          )}
+        </Formik>
+      </Box>
+    </Flex>
   );
 };
 

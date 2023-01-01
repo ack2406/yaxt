@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import TestTile from "./TestTile";
-import { Flex } from "@chakra-ui/react";
 
 interface ITest {
   id: number;
@@ -8,8 +7,8 @@ interface ITest {
   description: string;
 }
 
-const Home = () => {
-  const [tests, setTests] = useState([] as ITest[]);
+const EditTests = () => {
+  const [tests, setTests] = React.useState([] as ITest[]);
 
   useEffect(() => {
     fetch("http://localhost:5000/tests")
@@ -18,12 +17,12 @@ const Home = () => {
   }, []);
 
   return (
-    <Flex flexDirection="column" alignItems="center" gap="5">
+    <div className="tests">
       {tests.map((test: ITest) => (
         <TestTile key={test.id} test={test} />
       ))}
-    </Flex>
+    </div>
   );
 };
 
-export default Home;
+export default EditTests;
