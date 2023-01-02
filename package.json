@@ -24,7 +24,8 @@
     "react-router-dom": "^6.6.1",
     "sass": "^1.57.1",
     "scss": "^0.2.4",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/react": "^18.0.24",

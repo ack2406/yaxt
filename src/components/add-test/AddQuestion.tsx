@@ -21,7 +21,6 @@ import { useColorModeValue } from "@chakra-ui/react";
 
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
 
-
 import { AlertDialog, useDisclosure } from "@chakra-ui/react";
 import {
   AlertDialogBody,
@@ -30,6 +29,8 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
 } from "@chakra-ui/react";
+
+import DeleteDialog from "./DeleteDialog";
 
 interface IAnswer {
   id: number;
@@ -43,8 +44,18 @@ interface IQuestion {
   answers: IAnswer[];
 }
 
+interface ICloseProps {
+  remove: <T>(index: number) => T | undefined;
+  indexQuestion: number;
+}
+
 const AddQuestion = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const onCloseConfirm = ({ remove, indexQuestion }: ICloseProps) => {
+    onClose();
+    remove(indexQuestion);
+  };
 
   const cancelRef = React.useRef() as React.MutableRefObject<HTMLButtonElement>;
 
@@ -93,32 +104,16 @@ const AddQuestion = () => {
                       <DeleteIcon />
                     </Button>
 
-                    <AlertDialog
+                    <DeleteDialog
                       isOpen={isOpen}
-                      leastDestructiveRef={cancelRef}
+                      cancelRef={cancelRef}
                       onClose={onClose}
-                    >
-                      <AlertDialogOverlay>
-                        <AlertDialogContent>
-                          <AlertDialogHeader fontSize="lg" fontWeight="bold">
-                            Delete Question
-                          </AlertDialogHeader>
-
-                          <AlertDialogBody>
-                            Are you sure? You can't undo this action afterwards.
-                          </AlertDialogBody>
-
-                          <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
-                              Cancel
-                            </Button>
-                            <Button colorScheme="red" onClick={onClose} ml={3}>
-                              Delete
-                            </Button>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialogOverlay>
-                    </AlertDialog>
+                      onCloseConfirm={onCloseConfirm}
+                      remove={remove}
+                      indexQuestion={indexQuestion}
+                      bodyText={`Czy na pewno chcesz usunąć pytanie ${indexQuestion + 1}?`}
+                      headerText={`Pytanie ${indexQuestion + 1} zostanie usunięte.`}
+                    />
                   </FormControl>
                   <FormControl pb="5" borderBottom="1px" borderColor="gray.600">
                     <Field

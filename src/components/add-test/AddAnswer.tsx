@@ -31,12 +31,31 @@ import {
   Input,
   VStack,
   Heading,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
+
+import { useDisclosure } from "@chakra-ui/react";
 
 import { useColorModeValue } from "@chakra-ui/react";
 
+import { AlertDialog } from "@chakra-ui/react";
+
+import DeleteDialog from "./DeleteDialog";
+
+interface ICloseProps {
+  remove: <T>(index: number) => T | undefined;
+  indexQuestion: number;
+}
+
 const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const onCloseConfirm = ({ remove, indexQuestion }: ICloseProps) => {
+    onClose();
+    remove(indexQuestion);
+  };
+
+  const cancelRef = React.useRef() as React.MutableRefObject<HTMLButtonElement>;
   const color = useColorModeValue("gray.100", "blackAlpha.100");
   const colorButton = useColorModeValue("gray.200", "blackAlpha.100");
   const colorButtonHover = useColorModeValue("gray.100", "whiteAlpha.200");
@@ -66,17 +85,31 @@ const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
                     display="flex"
                     alignItems="center"
                     justifyContent="space-between"
-
                   >
                     <Heading size="sm">Odpowiedź {indexAnswer + 1}</Heading>
 
                     <Button
                       colorScheme="red"
-                      onClick={() => remove(indexAnswer)}
+                      onClick={() => onOpen()}
                       size="sm"
                     >
-                      <DeleteIcon/>
+                      <DeleteIcon />
                     </Button>
+
+                    <DeleteDialog
+                      isOpen={isOpen}
+                      cancelRef={cancelRef}
+                      onClose={onClose}
+                      onCloseConfirm={onCloseConfirm}
+                      remove={remove}
+                      indexQuestion={indexQuestion}
+                      bodyText={`Czy na pewno chcesz usunąć odpowiedź ${
+                        indexQuestion + 1
+                      }?`}
+                      headerText={`Odpowiedź ${
+                        indexQuestion + 1
+                      } zostanie usunięta.`}
+                    />
                   </FormControl>
                   <FormControl>
                     <Field
@@ -86,7 +119,9 @@ const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
                       name={`questions.${indexQuestion}.answers.${indexAnswer}.content`}
                       type="text"
                       height="90"
-                      placeholder={`Treść odpowiedzi, np. ${(indexAnswer + 1)**2} cm²`}
+                      placeholder={`Treść odpowiedzi, np. ${
+                        (indexAnswer + 1) ** 2
+                      } cm²`}
                     />
                   </FormControl>
                   <FormControl>
@@ -107,14 +142,10 @@ const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
                 p="5"
                 borderWidth="1px"
                 rounded="md"
-
                 w="100%"
-                
-
                 _hover={{
                   bg: colorButtonHover,
                 }}
-
                 onClick={() =>
                   push({
                     content: "",
@@ -122,7 +153,8 @@ const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
                   })
                 }
               >
-                <AddIcon mr="2"/>Dodaj odpowiedź
+                <AddIcon mr="2" />
+                Dodaj odpowiedź
               </Button>
             </Box>
           );
