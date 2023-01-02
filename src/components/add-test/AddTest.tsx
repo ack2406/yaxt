@@ -17,6 +17,17 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/react";
+
+import * as Yup from "yup";
+
+import { useState } from "react";
+
 interface IValues {
   values: {
     name: string;
@@ -34,6 +45,9 @@ interface IValues {
 const AddTest = () => {
   const bg = useColorModeValue("gray.100", "gray.700");
   const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
+
+  const [testSubmitted, setTestSubmitted] = useState(false);
+
 
 
   const initialValues = {
@@ -57,64 +71,61 @@ const AddTest = () => {
   };
 
   const onSubmit = ({ values }: IValues) => {
-    alert(JSON.stringify(values, null, 2));
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     authorization: "Bearer " + localStorage.getItem("token"),
-    //   },
-    //   body: JSON.stringify({
-    //     name: values.name,
-    //     description: values.description,
-    //     picture_path: "",
-    //   }),
-    // };
-    // fetch("http://localhost:5000/tests", requestOptions)
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     values.questions.forEach((question) => {
-    //       const requestOptions = {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           authorization: "Bearer " + localStorage.getItem("token"),
-    //         },
-    //         body: JSON.stringify({
-    //           content: question.content,
-    //           picture_path: "",
-    //         }),
-    //       };
-    //       fetch(
-    //         `http://localhost:5000/tests/${res.id}/questions`,
-    //         requestOptions
-    //       )
-    //         .then((res) => res.json())
-    //         .then((res) => {
-    //           question.answers.forEach((answer) => {
-    //             const requestOptions = {
-    //               method: "POST",
-    //               headers: {
-    //                 "Content-Type": "application/json",
-    //                 authorization: "Bearer " + localStorage.getItem("token"),
-    //               },
-    //               body: JSON.stringify({
-    //                 content: answer.content,
-    //                 is_correct: answer.is_correct,
-    //                 question_id: res.id,
-    //               }),
-    //             };
-    //             fetch(
-    //               `http://localhost:5000/questions/${res.id}/answers`,
-    //               requestOptions
-    //             );
-    //           });
-    //         });
-    //     });
-    //   });
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        name: values.name,
+        description: values.description,
+        picture_path: "",
+      }),
+    };
+    fetch("http://localhost:5000/tests", requestOptions)
+      .then((res) => res.json())
+      .then((res) => {
+        values.questions.forEach((question) => {
+          const requestOptions = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + localStorage.getItem("token"),
+            },
+            body: JSON.stringify({
+              content: question.content,
+              picture_path: "",
+            }),
+          };
+          fetch(
+            `http://localhost:5000/tests/${res.id}/questions`,
+            requestOptions
+          )
+            .then((res) => res.json())
+            .then((res) => {
+              question.answers.forEach((answer) => {
+                const requestOptions = {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    authorization: "Bearer " + localStorage.getItem("token"),
+                  },
+                  body: JSON.stringify({
+                    content: answer.content,
+                    is_correct: answer.is_correct,
+                    question_id: res.id,
+                  }),
+                };
+                fetch(
+                  `http://localhost:5000/questions/${res.id}/answers`,
+                  requestOptions
+                );
+              });
+            });
+        });
+      });
   };
-
-
 
   return (
     <Flex align="center" justify="center">
@@ -123,10 +134,20 @@ const AddTest = () => {
           initialValues={initialValues}
           onSubmit={(values) => onSubmit({ values })}
           enableReinitialize
+
         >
-          {({ handleSubmit }) => (
+          {({ handleSubmit,  }) => (
             <form onSubmit={handleSubmit}>
               <Flex direction="column" align="flex-end">
+                {testSubmitted ? (
+                  <Alert status="success" borderRadius="md" mb="5">
+                    <AlertIcon />
+                    Test został dodany!
+                  </Alert>
+                ) : (
+                  <></>
+                )}
+
                 <VStack
                   spacing={4}
                   align="flex-start"
@@ -144,7 +165,6 @@ const AddTest = () => {
                       as={Input}
                       name="name"
                       type="text"
-
                       placeholder="np. Kolos z Analizy Matematycznej 2018"
                     />
                   </FormControl>
@@ -164,7 +184,19 @@ const AddTest = () => {
 
                 <AddQuestion />
 
-                <Button size="lg" mt="10" mb="40" type="submit" colorScheme="blue">
+                <Button
+                  size="lg"
+                  mt="10"
+                  mb="40"
+                  type="submit"
+                  colorScheme="blue"
+                  onClick={() => {
+                    window.scrollTo(0, 0);
+
+                    setTestSubmitted(true);
+
+                  }}
+                >
                   Stwórz
                 </Button>
               </Flex>
