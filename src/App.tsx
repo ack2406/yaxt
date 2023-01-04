@@ -5,6 +5,7 @@ import AddTest from "./components/add-test/AddTest";
 import Test from "./components/test/Test";
 import EditTests from "./components/edit-tests/EditTests";
 import EditTest from "./components/edit-test/EditTest";
+import Settings from "./components/settings/Settings";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/edit-tests" element={<EditTests />} />
           <Route path="/edit-test/:id" element={<EditTest />} />
           <Route path="/test/:id" element={<Test />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </BrowserRouter>

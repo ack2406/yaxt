@@ -3,6 +3,35 @@ import { Field, FieldArray } from "formik";
 
 import EditAnswer from "./EditAnswer";
 
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  VStack,
+  Heading,
+  Textarea,
+} from "@chakra-ui/react";
+
+import { useColorModeValue } from "@chakra-ui/react";
+
+import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+
+import { AlertDialog, useDisclosure } from "@chakra-ui/react";
+import {
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+} from "@chakra-ui/react";
+
+import EditDialog from "./EditDialog";
+
 interface IAnswer {
   id: number;
   content: string;
@@ -15,45 +44,109 @@ interface IQuestion {
   answers: IAnswer[];
 }
 
+
+interface ICloseProps {
+  remove: <T>(index: number) => T | undefined;
+  indexQuestion: number;
+}
+
+
 const EditQuestion = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const onCloseConfirm = ({ remove, indexQuestion }: ICloseProps) => {
+    onClose();
+    remove(indexQuestion);
+  };
+
+  const cancelRef = React.useRef() as React.MutableRefObject<HTMLButtonElement>;
+
+  const color = useColorModeValue("gray.100", "gray.700");
+  const colorButton = useColorModeValue("gray.200", "gray.700");
+  const colorButtonHover = useColorModeValue("gray.100", "whiteAlpha.300");
+
+  const bg = useColorModeValue("gray.100", "gray.700");
+  const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
+
   return (
-    <div className="edit-questions">
-      <div className="edit-questions-title">Edit Questions</div>
+    <Box w="100%">
       <FieldArray name="questions">
         {({ push, remove, form }) => {
           const { values: valueQuestions } = form;
           const { questions } = valueQuestions;
 
           return (
-            <div className="edit-questions-list">
-              {questions.map((question: IQuestion, indexQuestion: number) => (
-                <div className="edit-question" key={indexQuestion}>
-                  <div className="top-answer">
-                    <label htmlFor={`questions.${indexQuestion}.content`}>
-                      Question
-                    </label>
+            <Box>
+              {questions?.map((question: IQuestion, indexQuestion: number) => (
+                <VStack
+                  key={indexQuestion}
+                  spacing={4}
+                  align="flex-start"
+                  bg={color}
+                  p="5"
+                  borderWidth="1px"
+                  rounded="md"
+                  boxShadow="sm"
+                  mt="8"
+                >
+                  <FormControl
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    pb="5"
+                  >
+                    <Heading size="md">Pytanie {indexQuestion + 1}</Heading>
 
-                    <div
-                      className="edit-question-remove"
-                      onClick={() => remove(indexQuestion)}
+                    <Button
+                      colorScheme="red"
+                      onClick={() => {
+                        onOpen();
+                      }}
                     >
-                      X
-                    </div>
-                  </div>
+                      <DeleteIcon />
+                    </Button>
 
-                  <Field
-                    name={`questions.${indexQuestion}.content`}
-                    type="text"
-                  />
+                    <EditDialog
+                      isOpen={isOpen}
+                      cancelRef={cancelRef}
+                      onClose={onClose}
+                      onCloseConfirm={onCloseConfirm}
+                      remove={remove}
+                      indexQuestion={indexQuestion}
+                      bodyText={`Czy na pewno chcesz usunąć pytanie ${indexQuestion + 1}?`}
+                      headerText={`Pytanie ${indexQuestion + 1} zostanie usunięte.`}
+                    />
+                  </FormControl>
+                  <FormControl pb="5" borderBottom="1px" borderColor="gray.600">
+                    <Field
+                      as={Textarea}
+                      bg={button}
+                      resize="none"
+                      height="90"
+                      name={`questions.${indexQuestion}.content`}
+                      type="text"
+                      placeholder="Treść Pytania, np. Ile wynosi pole trójkąta o podstawie 5 m i wysokości 10 m?"
+                    />
+                  </FormControl>
 
                   <EditAnswer
                     question={question}
                     indexQuestion={indexQuestion}
                   />
-                </div>
+                </VStack>
               ))}
-              <div
-                className="edit-question-push"
+              <Button
+                bg={colorButton}
+                size="lg"
+                p="5"
+                borderWidth="1px"
+                rounded="md"
+                boxShadow="sm"
+                mt="8"
+                w="100%"
+                _hover={{
+                  bg: colorButtonHover,
+                }}
                 onClick={() =>
                   push({
                     content: "",
@@ -61,13 +154,14 @@ const EditQuestion = () => {
                   })
                 }
               >
-                Dodaj
-              </div>
-            </div>
+                <AddIcon mr="2" />
+                Dodaj Pytanie
+              </Button>
+            </Box>
           );
         }}
       </FieldArray>
-    </div>
+    </Box>
   );
 };
 

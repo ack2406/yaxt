@@ -16,7 +16,7 @@ interface ICloseProps {
   indexQuestion: number;
 }
 
-interface IDeleteDialogProps {
+interface IEditDialogProps {
   isOpen: boolean;
   cancelRef: React.MutableRefObject<HTMLButtonElement>;
   onClose: () => void;
@@ -27,7 +27,7 @@ interface IDeleteDialogProps {
   headerText: string;
 }
 
-const DeleteDialog = ({isOpen, cancelRef, onClose, onCloseConfirm, remove, indexQuestion, bodyText, headerText}: IDeleteDialogProps) => {
+const EditDialog = ({isOpen, cancelRef, onClose, onCloseConfirm, remove, indexQuestion, bodyText, headerText}: IEditDialogProps) => {
   return (
     <AlertDialog
     isOpen={isOpen}
@@ -62,4 +62,4 @@ const DeleteDialog = ({isOpen, cancelRef, onClose, onCloseConfirm, remove, index
   )
 }
 
-export default DeleteDialog
+export default EditDialog
