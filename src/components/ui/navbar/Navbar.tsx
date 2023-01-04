@@ -92,8 +92,8 @@ const Navbar = () => {
               icon={<EditIcon />}
             />
             <NavbarButton
-              content="Uprawnienia"
-              refLink="/"
+              content="Ustawienia"
+              refLink="/settings/"
               icon={<SettingsIcon />}
             />
             <NavbarButton
