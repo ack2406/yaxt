@@ -1,14 +1,29 @@
 import { Request, Response } from "express";
 import { Question } from "../models/Question";
+import { Test } from "../models/Test";
 
 // create a new question
 export const createQuestion = async (req: Request, res: Response) => {
   try {
     const question = new Question({
       content: req.body.content,
+      test: req.body.test,
     });
 
     await question.save();
+
+    // add reference to question in test
+    const test = await Test.findByIdAndUpdate(
+      req.body.test,
+      {
+        $push: { questions: question._id },
+      },
+      { new: true }
+    );
+
+    if (!test) {
+        res.status(404).json({ message: "Test not found" });
+    }
 
     res.status(201).json({ message: "Question created", question: question });
   } catch (error) {
@@ -19,7 +34,7 @@ export const createQuestion = async (req: Request, res: Response) => {
 // read all questions
 export const getAllQuestions = async (req: Request, res: Response) => {
   try {
-    const questions = await Question.find();
+    const questions = await Question.find().populate("test");
     res.status(200).json({ message: "Questions retrieved", questions });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving questions", error });
