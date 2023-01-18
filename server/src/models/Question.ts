@@ -5,6 +5,10 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
+  test: {
+    type: Schema.Types.ObjectId,
+    ref: "Test",
+  },
   answers: [
     {
       type: Schema.Types.ObjectId,
