@@ -1,7 +1,12 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import { TestRouter } from "./routes/tests";
+import { QuestionRouter } from "./routes/questions";
 import connectDB from "./config/db";
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
+
+mongoose.set("strictQuery", false);
+
 const PORT = process.env.PORT || 3000;
 
 const app = express();
@@ -9,10 +14,17 @@ const app = express();
 // connect to the database
 connectDB();
 
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+app.use(bodyParser.json());
 
 // define routes
 app.use("/api/tests", TestRouter);
-// app.use("/api/questions", QuestionRouter);
+app.use("/api/questions", QuestionRouter);
 // app.use("/api/answers", AnswerRouter);
 
 // start the server
