@@ -40,3 +40,38 @@ export const getAnswerById = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error retrieving answer", error });
   }
 };
+
+// update a answer
+export const updateAnswer = async (req: Request, res: Response) => {
+  try {
+    const answer = await Answer.findByIdAndUpdate(
+      req.params.id,
+      {
+        content: req.body.content,
+        isCorrect: req.body.isCorrect,
+      },
+      { new: true }
+    );
+    if (!answer) {
+      res.status(404).json({ message: "Answer not found" });
+    }
+
+    res.status(200).json({ message: "Answer updated", answer });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating answer", error });
+  }
+};
+
+// delete a answer
+export const deleteAnswer = async (req: Request, res: Response) => {
+  try {
+    const answer = await Answer.findByIdAndDelete(req.params.id);
+    if (!answer) {
+      res.status(404).json({ message: "Answer not found" });
+    }
+
+    res.status(200).json({ message: "Answer deleted", answer });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting answer", error });
+  }
+};

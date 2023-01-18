@@ -39,3 +39,38 @@ export const getTestById = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error retrieving test", error });
   }
 };
+
+// update a test
+export const updateTest = async (req: Request, res: Response) => {
+  try {
+    const test = await Test.findByIdAndUpdate(
+      req.params.id,
+      {
+        title: req.body.title,
+        description: req.body.description,
+      },
+      { new: true }
+    );
+    if (!test) {
+      res.status(404).json({ message: "Test not found" });
+    }
+
+    res.status(200).json({ message: "Test updated", test });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating test", error });
+  }
+};
+
+// delete a test
+export const deleteTest = async (req: Request, res: Response) => {
+  try {
+    const test = await Test.findByIdAndDelete(req.params.id);
+    if (!test) {
+      res.status(404).json({ message: "Test not found" });
+    }
+
+    res.status(200).json({ message: "Test deleted", test });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting test", error });
+  }
+};
