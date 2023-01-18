@@ -13,7 +13,7 @@ export const createTest = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: "Test created", test: test });
   } catch (error) {
-    res.status(500).json({ message: "Error creatng test", error });
+    res.status(500).json({ message: "Error creating test", error });
   }
 };
 
