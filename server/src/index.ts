@@ -1,6 +1,7 @@
 import express from "express";
 import { TestRouter } from "./routes/tests";
 import { QuestionRouter } from "./routes/questions";
+import { AnswerRouter } from "./routes/answers";
 import connectDB from "./config/db";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
@@ -25,7 +26,7 @@ app.use(bodyParser.json());
 // define routes
 app.use("/api/tests", TestRouter);
 app.use("/api/questions", QuestionRouter);
-// app.use("/api/answers", AnswerRouter);
+app.use("/api/answers", AnswerRouter);
 
 // start the server
 mongoose.connection.once("open", () => {
