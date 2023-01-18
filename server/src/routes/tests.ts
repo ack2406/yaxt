@@ -1,10 +1,10 @@
-import express from 'express';
-import { getAllTests, getTestById, createTest} from '../controllers/tests.js';
+import express from "express";
+import { getAllTests, getTestById, createTest } from "../controllers/tests";
 
 const TestRouter = express.Router();
 
-TestRouter.route('/').get(getAllTests).post(createTest);
+TestRouter.route("/").get(getAllTests).post(createTest);
 
-TestRouter.route('/:id').get(getTestById)
+TestRouter.route("/:id").get(getTestById);
 
 export { TestRouter };
