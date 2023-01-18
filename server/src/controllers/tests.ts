@@ -20,7 +20,7 @@ export const createTest = async (req: Request, res: Response) => {
 // read all tests
 export const getAllTests = async (req: Request, res: Response) => {
   try {
-    const tests = await Test.find();
+    const tests = await Test.find().populate("questions");
     res.status(200).json({ message: "Tests retrieved", tests });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving tests", error });
