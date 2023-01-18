@@ -6,7 +6,7 @@ export const createTest = async (req: Request, res: Response) => {
   try {
     const test = new Test({
       title: req.body.title,
-      description: req.body.description
+      description: req.body.description,
     });
 
     await test.save();
