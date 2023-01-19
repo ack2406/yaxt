@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { isCallChain } from "typescript";
 import { Answer } from "../models/Answer";
+import { Question } from "../models/Question";
 
 // create a new answer
 export const createAnswer = async (req: Request, res: Response) => {
@@ -11,6 +12,13 @@ export const createAnswer = async (req: Request, res: Response) => {
     });
 
     await answer.save();
+
+    // add reference to question
+    const question = await Question.findByIdAndUpdate(
+      req.body.questionId,
+      { $push: { answers: answer._id } },
+      { new: true }
+    ).populate("answers");
 
     res.status(201).json({ message: "Answer created", answer: answer });
   } catch (error) {
