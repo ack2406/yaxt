@@ -9,6 +9,10 @@ const AnswerSchema = new Schema({
     type: Boolean,
     required: true,
   },
+  question: {
+    type: Schema.Types.ObjectId,
+    ref: "Question",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
