@@ -17,10 +17,10 @@ export const createAnswer = async (req: Request, res: Response) => {
 
     // add reference to question
     const question = await Question.findByIdAndUpdate(
-      req.body.questionId,
+      req.body.question,
       { $push: { answers: answer._id } },
       { new: true }
-    ).populate("answers");
+    );
 
     res.status(201).json({ message: "Answer created", answer: answer });
   } catch (error) {
