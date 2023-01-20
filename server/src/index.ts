@@ -6,6 +6,8 @@ import connectDB from "./config/db";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import cors from "cors";
+
 dotenv.config();
 
 mongoose.set("strictQuery", false);
@@ -24,6 +26,9 @@ app.use(
 );
 
 app.use(bodyParser.json());
+
+app.use(cors());
+
 
 // define routes
 app.use("/api/tests", TestRouter);
