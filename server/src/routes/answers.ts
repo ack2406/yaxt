@@ -11,6 +11,9 @@ const AnswerRouter = express.Router();
 
 AnswerRouter.route("/").get(getAllAnswers).post(createAnswer);
 
-AnswerRouter.route("/:id").get(getAnswerById).put(updateAnswer).delete(deleteAnswer);
+AnswerRouter.route("/:id")
+  .get(getAnswerById)
+  .put(updateAnswer)
+  .delete(deleteAnswer);
 
 export { AnswerRouter };

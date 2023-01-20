@@ -6,11 +6,12 @@ import {
   updateTest,
   deleteTest,
 } from "../controllers/tests";
+import { checkAuth } from "../config/utils";
 
 const TestRouter = express.Router();
 
-TestRouter.route("/").get(getAllTests).post(createTest);
+TestRouter.route("/").get(getAllTests).post(checkAuth, createTest);
 
-TestRouter.route("/:id").get(getTestById).put(updateTest).delete(deleteTest);
+TestRouter.route("/:id").get(getTestById).put(checkAuth, updateTest).delete(checkAuth, deleteTest);
 
 export { TestRouter };
