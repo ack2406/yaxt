@@ -5,6 +5,8 @@ import { AnswerRouter } from "./routes/answers";
 import connectDB from "./config/db";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
+dotenv.config();
 
 mongoose.set("strictQuery", false);
 
