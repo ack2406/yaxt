@@ -7,6 +7,7 @@ export const createTest = async (req: Request, res: Response) => {
     const test = new Test({
       title: req.body.title,
       description: req.body.description,
+      image: req.body.image,
     });
 
     await test.save();

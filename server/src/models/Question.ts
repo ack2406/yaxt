@@ -5,6 +5,14 @@ const QuestionSchema = new Schema({
     type: String,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true
+  },
   test: {
     type: Schema.Types.ObjectId,
     ref: "Test",
