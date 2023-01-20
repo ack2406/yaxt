@@ -9,6 +9,10 @@ const TestSchema = new Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  },
   questions: [
     {
       type: Schema.Types.ObjectId,

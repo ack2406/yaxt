@@ -9,6 +9,8 @@ export const createAnswer = async (req: Request, res: Response) => {
     const answer = new Answer({
       content: req.body.content,
       isCorrect: req.body.isCorrect,
+      image: req.body.image,
+      question: req.body.question,
     });
 
     await answer.save();

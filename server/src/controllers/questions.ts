@@ -7,6 +7,8 @@ export const createQuestion = async (req: Request, res: Response) => {
   try {
     const question = new Question({
       content: req.body.content,
+      type: req.body.type,
+      image: req.body.image,
       test: req.body.test,
     });
 
