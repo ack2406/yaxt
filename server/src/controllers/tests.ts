@@ -21,7 +21,12 @@ export const createTest = async (req: Request, res: Response) => {
 // read all tests
 export const getAllTests = async (req: Request, res: Response) => {
   try {
-    const tests = await Test.find().populate("questions");
+    const tests = await Test.find().populate({
+      path: "questions",
+      populate: {
+        path: "answers",
+      },
+    });
     res.status(200).json({ message: "Tests retrieved", tests });
   } catch (error) {
     res.status(500).json({ message: "Error retrieving tests", error });
@@ -31,7 +36,12 @@ export const getAllTests = async (req: Request, res: Response) => {
 // read a test
 export const getTestById = async (req: Request, res: Response) => {
   try {
-    const test = await Test.findById(req.params.id);
+    const test = await Test.findById(req.params.id).populate({
+      path: "questions",
+      populate: {
+        path: "answers",
+      },
+    });
     if (!test) {
       res.status(404).json({ message: "Test not found" });
     }
