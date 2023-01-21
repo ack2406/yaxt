@@ -6,28 +6,14 @@ import { useState } from "react";
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 
-import Question from "./Question";
+import SolveTestQuestion from "./SolveTestQuestion";
 
-interface IAnswer {
-  id: number;
-  content: string;
-  is_correct: boolean;
-}
+import { Test, Question, Answer } from "../../types/Basic";
 
-interface IQuestion {
-  id: number;
-  content: string;
-  answers: IAnswer[];
-}
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
-interface ITest {
-  id: number;
-  name: string;
-  questions: IQuestion[];
-}
-
-const Test = () => {
-  const [test, setTest] = useState({} as ITest);
+const SolveTest = () => {
+  const [test, setTest] = useState({} as Test);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [points, setPoints] = useState(0);
   const [answersGiven, setAnswersGiven] = useState(0);
@@ -44,15 +30,15 @@ const Test = () => {
   }, []);
 
   const getTest = () => {
-    fetch(`http://localhost:5000/tests/${id}`)
+    fetch(API_URL + `/tests/${id}`)
       .then((res) => res.json())
       .then((data) => {
         // shuffle questions and answers
-        data.questions.forEach((question: IQuestion) => {
+        data.test.questions.forEach((question: Question) => {
           question.answers.sort(() => Math.random() - 0.5);
         });
-        data.questions.sort(() => Math.random() - 0.5);
-        return data;
+        data.test.questions.sort(() => Math.random() - 0.5);
+        return data.test;
       })
       .then((data) => {
         setTest(data);
@@ -81,17 +67,17 @@ const Test = () => {
     }
   };
 
-  const validateAnswer = (question: IQuestion, answer: IAnswer) => {
+  const validateAnswer = (question: Question, answer: Answer) => {
     setAnswered(true);
     setAnswersGiven((answersGiven) => answersGiven + 1);
-    if (answer.is_correct) {
+    if (answer.isCorrect) {
       setPoints((points) => points + 1);
     } else {
       setTest((prevTest) => {
         let newQuestion = { ...question };
         // increment newQuestion's id by one bigger than last in test array
-        newQuestion.id =
-          prevTest.questions[prevTest.questions.length - 1].id + 1;
+        newQuestion._id =
+          prevTest.questions[prevTest.questions.length - 1]._id + 1;
         // add newQuestion to test array
         prevTest.questions.push(newQuestion);
 
@@ -116,7 +102,7 @@ const Test = () => {
         display="flex"
         flexDirection="column"
       >
-        <Heading textAlign="center">{test.name}</Heading>
+        <Heading textAlign="center">{test.title}</Heading>
         <Flex justifyContent="center" gap="8">
           <Text>
             {points}/{answersGiven}
@@ -155,8 +141,8 @@ const Test = () => {
         <Box>
           {test.questions &&
             (!finished ? (
-              <Question
-                key={test.questions[questionIndex].id}
+              <SolveTestQuestion
+                key={test.questions[questionIndex]._id}
                 question={test.questions[questionIndex]}
                 validateAnswer={validateAnswer}
               />
@@ -169,4 +155,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default SolveTest;

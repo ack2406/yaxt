@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
-import TestTile from "./TestTile";
 import { Flex } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { Test } from "../../types/Basic";
+import TestTile from "./TestTile";
 
-interface ITest {
-  id: number;
-  name: string;
-  description: string;
-}
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 const Home = () => {
-  const [tests, setTests] = useState([] as ITest[]);
+  const [tests, setTests] = useState([] as Test[]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/tests")
+    fetch(API_URL + "/tests")
       .then((response) => response.json())
-      .then((data) => setTests(data));
+      .then((data) => setTests(data.tests));
   }, []);
 
   return (

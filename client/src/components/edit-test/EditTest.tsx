@@ -42,6 +42,8 @@ interface ITest {
   questions: IQuestion[];
 }
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
 const EditTest = () => {
   const bg = useColorModeValue("gray.100", "gray.700");
   const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
@@ -52,7 +54,7 @@ const EditTest = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:5000/tests/${id}`)
+    fetch(API_URL + `/tests/${id}`)
       .then((response) => response.json())
       .then((data) => setTest(data));
   }, []);

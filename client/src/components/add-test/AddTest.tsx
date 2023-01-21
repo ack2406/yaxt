@@ -1,38 +1,32 @@
-import React from "react";
-import { FieldArray, Formik, useFormik, Field, Form } from "formik";
+import { Field, Formik } from "formik";
 
 import AddQuestion from "./AddQuestion";
 
-import { Textarea, useColorModeValue } from "@chakra-ui/react";
+import { Textarea } from "@chakra-ui/react";
 
 import {
   Box,
-  Button,
-  Checkbox,
-  Flex,
+  Button, Flex,
   FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-  VStack,
+  FormLabel, Input,
+  VStack
 } from "@chakra-ui/react";
 
 import {
   Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
+  AlertIcon
 } from "@chakra-ui/react";
 
-import * as Yup from "yup";
 
 import { useState } from "react";
 
 import { Values } from "../../types/Other";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+
 const AddTest = () => {
-  const bg = useColorModeValue("gray.100", "gray.700");
-  const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
+  const bg = "gray.700";
+  const button = "blackAlpha.100";
 
   const [testSubmitted, setTestSubmitted] = useState(false);
 
@@ -70,7 +64,7 @@ const AddTest = () => {
         image: "",
       }),
     };
-    fetch("http://localhost:5000/tests", requestOptions)
+    fetch(API_URL + "/tests", requestOptions)
       .then((res) => res.json())
       .then((res) => {
         values.questions.forEach((question) => {
@@ -78,7 +72,7 @@ const AddTest = () => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              authorization: "Bearer " + localStorage.getItem("token"),
+              "Authorization": "Bearer " + localStorage.getItem("token"),
             },
             body: JSON.stringify({
               content: question.content,
@@ -87,7 +81,7 @@ const AddTest = () => {
             }),
           };
           fetch(
-            `http://localhost:5000/tests/${res.id}/questions`,
+            API_URL + `/questions`,
             requestOptions
           )
             .then((res) => res.json())
@@ -106,7 +100,7 @@ const AddTest = () => {
                   }),
                 };
                 fetch(
-                  `http://localhost:5000/questions/${res.id}/answers`,
+                  API_URL + `/answers`,
                   requestOptions
                 );
               });
