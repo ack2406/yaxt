@@ -3,22 +3,7 @@ import { Field, FieldArray } from "formik";
 
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
 
-interface IAnswer {
-  id: number;
-  content: string;
-  is_correct: boolean;
-}
-
-interface IQuestion {
-  id: number;
-  content: string;
-  answers: IAnswer[];
-}
-
-interface AddAnswerProps {
-  indexQuestion: number;
-  question: IQuestion;
-}
+import { AddAnswerProps } from "../../types/Props";
 
 import {
   Box,
@@ -42,15 +27,12 @@ import { AlertDialog } from "@chakra-ui/react";
 
 import DeleteDialog from "./DeleteDialog";
 
-interface ICloseProps {
-  remove: <T>(index: number) => T | undefined;
-  indexQuestion: number;
-}
+import { CloseProps } from "../../types/Props";
 
 const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const onCloseConfirm = ({ remove, indexQuestion }: ICloseProps) => {
+  const onCloseConfirm = ({ remove, indexQuestion }: CloseProps) => {
     onClose();
     remove(indexQuestion);
   };
@@ -127,7 +109,7 @@ const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
                   <FormControl>
                     <Field
                       as={Checkbox}
-                      name={`questions.${indexQuestion}.answers.${indexAnswer}.is_correct`}
+                      name={`questions.${indexQuestion}.answers.${indexAnswer}.isCorrect`}
                       type="checkbox"
                       size="md"
                     >

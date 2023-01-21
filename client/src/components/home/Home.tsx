@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TestTile from "./TestTile";
 import { Flex } from "@chakra-ui/react";
+import { Test } from "../../types/Basic";
 
 interface ITest {
   id: number;
@@ -19,8 +20,8 @@ const Home = () => {
 
   return (
     <Flex flexDirection="column" alignItems="center" gap="5">
-      {tests.map((test: ITest) => (
-        <TestTile key={test.id} test={test} />
+      {tests.map((test: Test) => (
+        <TestTile key={test._id} test={test} />
       ))}
     </Flex>
   );

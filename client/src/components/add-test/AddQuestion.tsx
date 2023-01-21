@@ -32,27 +32,13 @@ import {
 
 import DeleteDialog from "./DeleteDialog";
 
-interface IAnswer {
-  id: number;
-  content: string;
-  is_correct: boolean;
-}
-
-interface IQuestion {
-  id: number;
-  content: string;
-  answers: IAnswer[];
-}
-
-interface ICloseProps {
-  remove: <T>(index: number) => T | undefined;
-  indexQuestion: number;
-}
+import { Question } from "../../types/Basic";
+import { CloseProps } from "../../types/Props";
 
 const AddQuestion = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const onCloseConfirm = ({ remove, indexQuestion }: ICloseProps) => {
+  const onCloseConfirm = ({ remove, indexQuestion }: CloseProps) => {
     onClose();
     remove(indexQuestion);
   };
@@ -75,7 +61,7 @@ const AddQuestion = () => {
 
           return (
             <Box>
-              {questions.map((question: IQuestion, indexQuestion: number) => (
+              {questions.map((question: Question, indexQuestion: number) => (
                 <VStack
                   key={indexQuestion}
                   spacing={4}
@@ -148,7 +134,7 @@ const AddQuestion = () => {
                 onClick={() =>
                   push({
                     content: "",
-                    answers: [{ content: "", is_correct: false }],
+                    answers: [{ content: "", isCorrect: false }],
                   })
                 }
               >
