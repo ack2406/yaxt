@@ -7,11 +7,9 @@ const QuestionSchema = new Schema({
   },
   type: {
     type: String,
-    required: true,
   },
   image: {
     type: String,
-    required: true
   },
   test: {
     type: Schema.Types.ObjectId,
