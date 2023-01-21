@@ -11,7 +11,6 @@ const AnswerSchema = new Schema({
   },
   image: {
     type: String,
-    required: true,
   },
   question: {
     type: Schema.Types.ObjectId,

@@ -11,7 +11,6 @@ const TestSchema = new Schema({
   },
   image: {
     type: String,
-    required: true,
   },
   questions: [
     {
