@@ -1,12 +1,12 @@
-import express from "express";
-import { TestRouter } from "./routes/tests";
-import { QuestionRouter } from "./routes/questions";
-import { AnswerRouter } from "./routes/answers";
-import connectDB from "./config/db";
-import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import dotenv from "dotenv";
 import cors from "cors";
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+import connectDB from "./config/db";
+import { AnswerRouter } from "./routes/answers";
+import { QuestionRouter } from "./routes/questions";
+import { TestRouter } from "./routes/tests";
 
 dotenv.config();
 
