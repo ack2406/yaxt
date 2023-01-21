@@ -28,19 +28,7 @@ import * as Yup from "yup";
 
 import { useState } from "react";
 
-interface IValues {
-  values: {
-    name: string;
-    description: string;
-    questions: {
-      content: string;
-      answers: {
-        content: string;
-        is_correct: boolean;
-      }[];
-    }[];
-  };
-}
+import { Values } from "../../types/Other";
 
 const AddTest = () => {
   const bg = useColorModeValue("gray.100", "gray.700");
@@ -49,9 +37,8 @@ const AddTest = () => {
   const [testSubmitted, setTestSubmitted] = useState(false);
 
 
-
   const initialValues = {
-    name: "",
+    title: "",
     description: "",
     questions: [
       {
@@ -59,18 +46,18 @@ const AddTest = () => {
         answers: [
           {
             content: "",
-            is_correct: false,
+            isCorrect: false,
           },
           {
             content: "",
-            is_correct: false,
+            isCorrect: false,
           },
         ],
       },
     ],
   };
 
-  const onSubmit = ({ values }: IValues) => {
+  const onSubmit = ({ values }: Values) => {
     const requestOptions = {
       method: "POST",
       headers: {
@@ -78,9 +65,9 @@ const AddTest = () => {
         authorization: "Bearer " + localStorage.getItem("token"),
       },
       body: JSON.stringify({
-        name: values.name,
+        title: values.title,
         description: values.description,
-        picture_path: "",
+        image: "",
       }),
     };
     fetch("http://localhost:5000/tests", requestOptions)
@@ -95,7 +82,8 @@ const AddTest = () => {
             },
             body: JSON.stringify({
               content: question.content,
-              picture_path: "",
+              image: "",
+              test: res.test._id,
             }),
           };
           fetch(
@@ -113,8 +101,8 @@ const AddTest = () => {
                   },
                   body: JSON.stringify({
                     content: answer.content,
-                    is_correct: answer.is_correct,
-                    question_id: res.id,
+                    isCorrect: answer.isCorrect || false,
+                    question: res.question._id,
                   }),
                 };
                 fetch(
@@ -159,11 +147,11 @@ const AddTest = () => {
                   w="100%"
                 >
                   <FormControl>
-                    <FormLabel htmlFor="name">Nazwa Testu</FormLabel>
+                    <FormLabel htmlFor="title">Nazwa Testu</FormLabel>
                     <Field
                       bg={button}
                       as={Input}
-                      name="name"
+                      name="title"
                       type="text"
                       placeholder="np. Kolos z Analizy Matematycznej 2018"
                     />

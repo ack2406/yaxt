@@ -1,20 +1,6 @@
-import React from "react";
-import { LinkBox, LinkOverlay } from "@chakra-ui/react";
-import { Heading } from "@chakra-ui/react";
-import { Text } from "@chakra-ui/react";
-import { useColorModeValue } from "@chakra-ui/react";
+import { TestTileProps } from "../../types/Other";
 
-interface ITest {
-  id: number;
-  name: string;
-  description: string;
-}
-
-interface ITestTileProps {
-  test: ITest;
-}
-
-const TestTile = ({ test }: ITestTileProps) => {
+const TestTile = ({ test }: TestTileProps) => {
   return (
     <LinkBox
       w={{ base: "95%", md: "50%", lg: "33%"}}

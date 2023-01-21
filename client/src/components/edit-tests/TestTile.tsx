@@ -22,7 +22,8 @@ import {
   Text,
   HStack,
 } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { Answer, Question } from "../../types/Basic";
+import { TestTileProps } from "../../types/Props";
 
 interface IAnswer {
   id: number | null;
@@ -30,23 +31,7 @@ interface IAnswer {
   is_correct: boolean;
 }
 
-interface IQuestion {
-  id: number | null;
-  content: string;
-  answers: IAnswer[];
-}
-
-interface ITest {
-  id: number | null;
-  name: string;
-  description: string;
-}
-
-interface ITestTileProps {
-  test: ITest;
-}
-
-const TestTile = ({ test }: ITestTileProps) => {
+const TestTile = ({ test }: TestTileProps) => {
   const getTest = () => {
     // get test from database
     return fetch(`http://localhost:5000/tests/${test.id}`)
@@ -58,7 +43,7 @@ const TestTile = ({ test }: ITestTileProps) => {
   const removeTest = async () => {
     const fullTest = await getTest();
     const questions = fullTest.questions;
-    const answers = questions.map((question: IQuestion) => question.answers)[0];
+    const answers = questions.map((question: Question) => question.answers)[0];
 
     const requestOptions = {
       method: "DELETE",
@@ -103,7 +88,9 @@ const TestTile = ({ test }: ITestTileProps) => {
       <HStack justify="space-between">
         <Box>
           <Heading size="md" my="2">
-            <LinkOverlay href={`/edit-test/${test.id}`}>{test.name}</LinkOverlay>
+            <LinkOverlay href={`/edit-test/${test._id}`}>
+              {test.title}
+            </LinkOverlay>
           </Heading>
           <Text mb="3">{test.description}</Text>
         </Box>

@@ -1,15 +1,6 @@
-import React from "react";
-import { MenuItem, Link } from "@chakra-ui/react";
-import { EditIcon } from "@chakra-ui/icons";
-import { useColorModeValue } from "@chakra-ui/react";
+import { NavbarButtonProps } from "../../../types/Props";
 
-interface INavbarButtonProps {
-  content: string;
-  refLink: string;
-  icon: JSX.Element;
-}
-
-const NavbarButton = ({content, refLink, icon}: INavbarButtonProps) => {
+const NavbarButton = ({ content, refLink, icon }: NavbarButtonProps) => {
   return (
     <MenuItem
       icon={icon}
