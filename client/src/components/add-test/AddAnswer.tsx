@@ -1,7 +1,7 @@
-import React from "react";
 import { Field, FieldArray } from "formik";
+import React from "react";
 
-import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import { AddAnswerProps } from "../../types/Props";
 
@@ -9,21 +9,14 @@ import {
   Box,
   Button,
   Checkbox,
-  Flex,
   FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-  VStack,
   Heading,
   Textarea,
+  VStack
 } from "@chakra-ui/react";
 
 import { useDisclosure } from "@chakra-ui/react";
 
-import { useColorModeValue } from "@chakra-ui/react";
-
-import { AlertDialog } from "@chakra-ui/react";
 
 import DeleteDialog from "./DeleteDialog";
 
@@ -38,12 +31,12 @@ const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
   };
 
   const cancelRef = React.useRef() as React.MutableRefObject<HTMLButtonElement>;
-  const color = useColorModeValue("gray.100", "blackAlpha.100");
-  const colorButton = useColorModeValue("gray.200", "blackAlpha.100");
-  const colorButtonHover = useColorModeValue("gray.100", "whiteAlpha.200");
+  const color = "blackAlpha.100";
+  const colorButton = "blackAlpha.100";
+  const colorButtonHover = "whiteAlpha.200";
 
-  const bg = useColorModeValue("gray.100", "gray.700");
-  const button = useColorModeValue("blackAlpha.100", "blackAlpha.100");
+  const bg = "gray.700";
+  const button = "blackAlpha.100";
   return (
     <Box w="100%">
       <FieldArray name={`questions.${indexQuestion}.answers`}>

@@ -1,3 +1,4 @@
+import { Link, MenuItem } from "@chakra-ui/react";
 import { NavbarButtonProps } from "../../../types/Props";
 
 const NavbarButton = ({ content, refLink, icon }: NavbarButtonProps) => {
@@ -6,11 +7,7 @@ const NavbarButton = ({ content, refLink, icon }: NavbarButtonProps) => {
       icon={icon}
       as={Link}
       href={refLink}
-
-      
-      _hover={{
-        textDecoration: "none",
-      }}
+      _hover={{ textDecoration: "none" }}
     >
       {content}
     </MenuItem>

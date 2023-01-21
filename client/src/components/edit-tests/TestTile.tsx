@@ -1,40 +1,22 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
-  Checkbox,
-  Flex,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Input,
-  VStack,
   Heading,
-  Textarea,
+  HStack,
+  IconButton,
   LinkBox,
   LinkOverlay,
-  useColorModeValue,
-  IconButton,
-  AlertDialog,
-  Text,
-  HStack,
+  Text
 } from "@chakra-ui/react";
 import { Answer, Question } from "../../types/Basic";
 import { TestTileProps } from "../../types/Props";
 
-interface IAnswer {
-  id: number | null;
-  content: string;
-  is_correct: boolean;
-}
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
 const TestTile = ({ test }: TestTileProps) => {
   const getTest = () => {
     // get test from database
-    return fetch(`http://localhost:5000/tests/${test.id}`)
+    return fetch(API_URL + `/tests/${test._id}`)
       .then((response) => response.json())
       .then((data) => data);
   };
@@ -47,26 +29,28 @@ const TestTile = ({ test }: TestTileProps) => {
 
     const requestOptions = {
       method: "DELETE",
-      headers: { "Content-Type": "application/json", "authorization": 'Bearer ' + localStorage.getItem('token') },
+      headers: {
+        "Content-Type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("token"),
+      },
     };
 
-    // // remove all answers
+    // remove all answers
     answers &&
-      answers.forEach((answer: IAnswer) => {
-        fetch(`http://localhost:5000/answers/${answer.id}`, requestOptions);
+      answers.forEach((answer: Answer) => {
+        fetch(API_URL + `/answers/${answer._id}`, requestOptions);
       });
 
-    // // remove all questions
+    // remove all questions
     questions &&
-      questions.forEach((question: IQuestion) => {
-        fetch(`http://localhost:5000/questions/${question.id}`, requestOptions);
+      questions.forEach((question: Question) => {
+        fetch(API_URL + `/questions/${question._id}`, requestOptions);
       });
 
-    // // remove test
+    // remove test
+    fetch(API_URL + `/tests/${test._id}`, requestOptions);
 
-    fetch(`http://localhost:5000/tests/${test.id}`, requestOptions);
-
-    // // refresh page
+    // refresh page
     window.location.reload();
   };
 
@@ -76,10 +60,10 @@ const TestTile = ({ test }: TestTileProps) => {
       p="5"
       borderWidth="1px"
       rounded="md"
-      boxShadow={"sm"}
-      bg={useColorModeValue("gray.100", "gray.700")}
+      boxShadow="sm"
+      bg="gray.700"
       _hover={{
-        bg: useColorModeValue("gray.200", "gray.600"),
+        bg: "gray.600",
         transform: "translateY(-2px)",
         transitionDuration: "0.2s",
         transitionTimingFunction: "ease-in-out",
@@ -97,7 +81,7 @@ const TestTile = ({ test }: TestTileProps) => {
         <Box>
           <IconButton
             aria-label="Delete test"
-            icon={<DeleteIcon/>}
+            icon={<DeleteIcon />}
             onClick={removeTest}
             colorScheme="red"
           />
