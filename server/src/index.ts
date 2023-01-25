@@ -7,6 +7,7 @@ import connectDB from "./config/db";
 import { AnswerRouter } from "./routes/answers";
 import { QuestionRouter } from "./routes/questions";
 import { TestRouter } from "./routes/tests";
+import { AuthRouter } from "./routes/auth";
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use(cors());
 app.use("/api/tests", TestRouter);
 app.use("/api/questions", QuestionRouter);
 app.use("/api/answers", AnswerRouter);
+app.use("/api/auth", AuthRouter)
 
 // start the server
 mongoose.connection.once("open", () => {
