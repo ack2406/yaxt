@@ -1,27 +1,30 @@
 version: "3.7"
 
 services:
+  db:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: yaxt
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root123
+    volumes:
+      - ./utils/mongo/init.js:/docker-entrypoint-initdb.d/init.js
+
   server:
     build:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - 18427:18427
     depends_on:
       - db
 
-  db:
-    image: mongo:latest
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root123
-  
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - 80:80
     depends_on:
       - server
