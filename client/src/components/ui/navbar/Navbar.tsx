@@ -52,11 +52,13 @@ const Navbar = () => {
             variant="outline"
           />
           <MenuList>
+            {localStorage.getItem("token") ? (
             <NavbarButton
               content="Dodaj Test"
               refLink="/add-test/"
               icon={<AddIcon />}
             />
+            ) : null}
             <NavbarButton
               content="Ustawienia"
               refLink="/settings/"
