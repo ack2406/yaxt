@@ -1,15 +1,7 @@
 import { AddIcon, HamburgerIcon, SettingsIcon } from "@chakra-ui/icons";
 import { Menu, MenuButton, MenuList } from "@chakra-ui/react";
 
-import { EditIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Flex,
-  Heading,
-  IconButton,
-  Link,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, IconButton, Link } from "@chakra-ui/react";
 import NavbarButton from "./NavbarButton";
 
 import { FaGithub } from "react-icons/fa";
@@ -53,11 +45,11 @@ const Navbar = () => {
           />
           <MenuList>
             {localStorage.getItem("token") ? (
-            <NavbarButton
-              content="Dodaj Test"
-              refLink="/add-test/"
-              icon={<AddIcon />}
-            />
+              <NavbarButton
+                content="Dodaj Test"
+                refLink="/add-test/"
+                icon={<AddIcon />}
+              />
             ) : null}
             <NavbarButton
               content="Ustawienia"

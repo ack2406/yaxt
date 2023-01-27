@@ -1,14 +1,17 @@
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
+import { To, useParams } from "react-router-dom";
 
-import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Text
+} from "@chakra-ui/react";
 
 import SolveTestQuestion from "./SolveTestQuestion";
 
-import { Test, Question, Answer } from "../../types/Basic";
+import { Answer, Question, Test } from "../../types/Basic";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 
