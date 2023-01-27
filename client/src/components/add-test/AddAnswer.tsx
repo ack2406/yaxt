@@ -77,12 +77,12 @@ const AddAnswer = ({ indexQuestion, question }: AddAnswerProps) => {
                       onClose={onClose}
                       onCloseConfirm={onCloseConfirm}
                       remove={remove}
-                      indexQuestion={indexQuestion}
+                      indexQuestion={indexAnswer}
                       bodyText={`Czy na pewno chcesz usunąć odpowiedź ${
-                        indexQuestion + 1
+                        indexAnswer + 1
                       }?`}
                       headerText={`Odpowiedź ${
-                        indexQuestion + 1
+                        indexAnswer + 1
                       } zostanie usunięta.`}
                     />
                   </FormControl>
