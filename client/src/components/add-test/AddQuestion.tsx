@@ -81,8 +81,12 @@ const AddQuestion = () => {
                       onCloseConfirm={onCloseConfirm}
                       remove={remove}
                       indexQuestion={indexQuestion}
-                      bodyText={`Czy na pewno chcesz usunąć pytanie ${indexQuestion + 1}?`}
-                      headerText={`Pytanie ${indexQuestion + 1} zostanie usunięte.`}
+                      bodyText={`Czy na pewno chcesz usunąć pytanie ${
+                        indexQuestion + 1
+                      }?`}
+                      headerText={`Pytanie ${
+                        indexQuestion + 1
+                      } zostanie usunięte.`}
                     />
                   </FormControl>
                   <FormControl pb="5" borderBottom="1px" borderColor="gray.600">
