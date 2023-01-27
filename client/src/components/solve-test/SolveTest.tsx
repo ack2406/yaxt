@@ -20,11 +20,14 @@ const SolveTest = () => {
   const [finished, setFinished] = useState(false);
   const [answered, setAnswered] = useState(false);
   const [time, setTime] = useState(0);
+  const [timer, setTimer] = useState({} as NodeJS.Timer);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTime((time) => time + 1);
     }, 1000);
+
+    setTimer(interval)
 
     return () => clearInterval(interval);
   }, []);
@@ -62,6 +65,7 @@ const SolveTest = () => {
       if (questionIndex < test.questions.length - 1) {
         setQuestionIndex((questionIndex) => questionIndex + 1);
       } else {
+        clearInterval(timer);
         setFinished(true);
       }
     }
@@ -93,28 +97,25 @@ const SolveTest = () => {
   return (
     <Flex alignItems="center" justifyContent="center">
       <Box
-        bg={useColorModeValue("gray.100", "gray.700")}
+        bg="gray.700"
         w={{ base: "95%", md: "50%", lg: "31rem" }}
         p="5"
         borderWidth="1px"
         rounded="md"
-        boxShadow={"sm"}
+        boxShadow="sm"
         display="flex"
         flexDirection="column"
       >
         <Heading textAlign="center">{test.title}</Heading>
         <Flex justifyContent="center" gap="8">
           <Text>
-            {points}/{answersGiven}
+            Pytanie: {questionIndex + 1}/{test.questions?.length}
           </Text>
           <Text>
-            {answersGiven
-              ? Math.round((points / answersGiven) * 10000) / 100
-              : "-"}
-            %
+            Punkty: {points}/{answersGiven}
           </Text>
           <Text>
-            {Math.floor(time / 60)}:{time % 60 < 10 ? "0" : ""}
+            Czas: {Math.floor(time / 60)}:{time % 60 < 10 ? "0" : ""}
             {time % 60}
           </Text>
         </Flex>
@@ -125,13 +126,13 @@ const SolveTest = () => {
           m="auto"
           mt="5"
           w="100%"
-          bg={useColorModeValue("gray.300", "gray.600")}
+          bg="gray.600"
           _hover={{
-            bg: useColorModeValue("gray.300", "gray.600"),
+            bg: "gray.600",
           }}
           {...((answered || finished) && {
             _hover: {
-              bg: useColorModeValue("gray.400", "gray.500"),
+              bg: "gray.500",
             },
           })}
         >
