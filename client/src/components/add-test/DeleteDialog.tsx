@@ -1,15 +1,15 @@
-import React from 'react'
+import React from "react";
 
-import { AlertDialog, useDisclosure } from '@chakra-ui/react'
+import { AlertDialog, useDisclosure } from "@chakra-ui/react";
 import {
   AlertDialogBody,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 
-import { Button } from '@chakra-ui/react'
+import { Button } from "@chakra-ui/react";
 
 interface ICloseProps {
   remove: <T>(index: number) => T | undefined;
@@ -27,39 +27,46 @@ interface IDeleteDialogProps {
   headerText: string;
 }
 
-const DeleteDialog = ({isOpen, cancelRef, onClose, onCloseConfirm, remove, indexQuestion, bodyText, headerText}: IDeleteDialogProps) => {
+const DeleteDialog = ({
+  isOpen,
+  cancelRef,
+  onClose,
+  onCloseConfirm,
+  remove,
+  indexQuestion,
+  bodyText,
+  headerText,
+}: IDeleteDialogProps) => {
   return (
     <AlertDialog
-    isOpen={isOpen}
-    leastDestructiveRef={cancelRef}
-    onClose={onClose}
-  >
-    <AlertDialogOverlay>
-      <AlertDialogContent ml={5} mr={5} mt="30vh" >
-        <AlertDialogHeader fontSize="lg" fontWeight="bold">
-          {headerText}
-        </AlertDialogHeader>
+      isOpen={isOpen}
+      leastDestructiveRef={cancelRef}
+      onClose={onClose}
+    >
+      <AlertDialogOverlay>
+        <AlertDialogContent ml={5} mr={5} mt="30vh">
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            {headerText}
+          </AlertDialogHeader>
 
-        <AlertDialogBody>
-          {bodyText}
-        </AlertDialogBody>
+          <AlertDialogBody>{bodyText}</AlertDialogBody>
 
-        <AlertDialogFooter>
-          <Button ref={cancelRef} onClick={onClose}>
-            Anuluj
-          </Button>
-          <Button
-            colorScheme="red"
-            onClick={() => onCloseConfirm({remove, indexQuestion})}
-            ml={3}
-          >
-            Usuń
-          </Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialogOverlay>
-  </AlertDialog>
-  )
-}
+          <AlertDialogFooter>
+            <Button ref={cancelRef} onClick={onClose}>
+              Anuluj
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={() => onCloseConfirm({ remove, indexQuestion })}
+              ml={3}
+            >
+              Usuń
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
+  );
+};
 
-export default DeleteDialog
+export default DeleteDialog;
