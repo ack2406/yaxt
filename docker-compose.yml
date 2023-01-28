@@ -16,9 +16,7 @@ services:
       context: ./server
       dockerfile: Dockerfile
     ports:
-      - 18427:18427
-    depends_on:
-      - db
+      - 5000:5000
 
   client:
     build:
@@ -26,5 +24,4 @@ services:
       dockerfile: Dockerfile
     ports:
       - 80:80
-    depends_on:
-      - server
+
