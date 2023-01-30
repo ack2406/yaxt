@@ -13,7 +13,7 @@ import SolveTestQuestion from "./SolveTestQuestion";
 
 import { Answer, Question, Test } from "../../types/Basic";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 const SolveTest = () => {
   const [test, setTest] = useState({} as Test);
