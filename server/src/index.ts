@@ -8,6 +8,9 @@ import { AnswerRouter } from "./routes/answers";
 import { QuestionRouter } from "./routes/questions";
 import { TestRouter } from "./routes/tests";
 import { AuthRouter } from "./routes/auth";
+import swaggerUi from "swagger-ui-express";
+
+import swaggerDocument from "./swagger.json";
 
 dotenv.config();
 
@@ -29,6 +32,10 @@ app.use(
 app.use(bodyParser.json());
 
 app.use(cors());
+
+// swagger
+
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 // define routes
