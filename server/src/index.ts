@@ -8,17 +8,15 @@ import { AnswerRouter } from "./routes/answers";
 import { QuestionRouter } from "./routes/questions";
 import { TestRouter } from "./routes/tests";
 import { AuthRouter } from "./routes/auth";
-import swaggerUi from "swagger-ui-express";
-
-import swaggerDocument from "./swagger.json";
 
 dotenv.config();
 
 mongoose.set("strictQuery", false);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 const app = express();
+
 
 // connect to the database
 connectDB();
@@ -32,10 +30,6 @@ app.use(
 app.use(bodyParser.json());
 
 app.use(cors());
-
-// swagger
-
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 // define routes
